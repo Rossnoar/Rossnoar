@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Dwitama Cipta Internusa - Logistic & Procurement Agency</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #FFC107; /* Yellow Accent from screenshots */
+            --text-dark: #222222;
+            --text-gray: #666666;
+            --bg-light: #F8F9FA;
+            --bg-dark-gradient: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            --transition: all 0.3s ease;
+            --container-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--secondary-color);
+        }
+
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        /* Fixed Right Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 99;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+        }
+        .scroll-indicator span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+        .scroll-indicator .line {
+            width: 1px;
+            height: 40px;
+            background-color: var(--text-dark);
+        }
+
+        /* Floating WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: var(--transition);
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================================================
+           TOPBAR & HEADER
+           ========================================================================== */
+        .topbar {
+            background-color: #222;
+            color: #ccc;
+            padding: 10px 0;
+            font-size: 13px;
+        }
+        .topbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar-left, .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .topbar-left i, .topbar-right i {
+            color: var(--accent-color);
+            margin-right: 5px;
+        }
+        .topbar-right a:hover { color: var(--accent-color); }
+
+        header {
+            background-color: var(--secondary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0056b3; /* DCI Blue */
+            letter-spacing: -1px;
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        .logo span {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-gray);
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--accent-color); }
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            height: 90vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1586528116311-ad8ed7c15944?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            color: var(--secondary-color);
+        }
+        .hero h2 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+        .btn-white {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+        .btn-white:hover {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+        }
+        .btn-black {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        .btn-black:hover {
+            background-color: var(--accent-color);
+        }
+        .slider-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+        .slider-arrow {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .slider-arrow:hover { background-color: var(--accent-color); }
+
+        /* ==========================================================================
+           ABOUT SECTION
+           ========================================================================== */
+        .about-section {
+            background-color: var(--secondary-color);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-text h2 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+        .about-text p {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        .about-image img {
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* ==========================================================================
+           SERVICES SECTION
+           ========================================================================== */
+        .services-section {
+            background-color: var(--bg-light);
+            overflow: hidden;
+        }
+        .services-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        .services-text {
+            flex: 0 0 300px;
+        }
+        .services-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--text-gray);
+        }
+        .services-text h2 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .services-text p {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+        .services-carousel {
+            flex: 1;
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .services-carousel::-webkit-scrollbar { display: none; } /* Chrome */
+        
+        .service-card {
+            flex: 0 0 350px;
+            background-color: var(--secondary-color);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        .service-card.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .service-card p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: inherit;
+            opacity: 0.8;
+        }
+        .service-card a {
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .service-controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        .service-controls .slider-arrow {
+            position: static;
+            transform: none;
+            background-color: var(--primary-color);
+        }
+
+        /* ==========================================================================
+           WHY CHOOSE US
+           ========================================================================== */
+        .why-section {
+            background-color: var(--secondary-color);
+            text-align: center;
+        }
+        .why-section h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .why-section > p {
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: left;
+        }
+        .feature-item {
+            display: flex;
+            gap: 20px;
+        }
+        .feature-icon {
+            font-size: 40px;
+            color: var(--accent-color);
+        }
+        .feature-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .feature-content p {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        /* ==========================================================================
+           GALLERY SECTION
+           ========================================================================== */
+        .gallery-section {
+            background-color: var(--bg-light);
+            text-align: center;
+        }
+        .gallery-section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1/1;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================================================
+           CLIENTS SECTION
+           ========================================================================== */
+        .clients-section {
+            background-color: var(--secondary-color);
+            text-align: center;
+        }
+        .clients-section h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .clients-section p {
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto 50px;
+            font-size: 14px;
+        }
+        .client-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .client-logos img {
+            height: 40px;
+            opacity: 0.6;
+            filter: grayscale(100%);
+            transition: var(--transition);
+        }
+        .client-logos img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        /* ==========================================================================
+           TESTIMONIALS SECTION
+           ========================================================================== */
+        .testi-section {
+            background: var(--bg-dark-gradient);
+            color: var(--secondary-color);
+            position: relative;
+        }
+        .testi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .testi-left .quote-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .testi-left h2 {
+            font-size: 42px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .testi-left p {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        .testi-stat {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .testi-stat h3 {
+            font-size: 48px;
+        }
+        .testi-stat p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.3;
+            color: #aaa;
+        }
+        
+        .testi-card-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .testi-card {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 50px;
+            border-radius: 8px;
+            width: 100%;
+        }
+        .testi-card p {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .author-info h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .author-info span {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+        .testi-arrow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: white;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 5;
+        }
+        .testi-arrow.left { left: -20px; }
+        .testi-arrow.right { right: -20px; }
+
+        /* ==========================================================================
+           CONTACT SECTION
+           ========================================================================== */
+        .contact-section {
+            background-color: var(--secondary-color);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        .contact-info h2 {
+            font-size: 42px;
+            margin-bottom: 40px;
+        }
+        .info-blocks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .info-item {
+            margin-bottom: 20px;
+        }
+        .info-item h4 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .info-item p {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+        
+        .contact-form-box {
+            background-color: var(--accent-color);
+            padding: 50px;
+            border-radius: 8px;
+        }
+        .contact-form-box h3 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+        }
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            font-size: 14px;
+            color: var(--text-dark);
+            outline: none;
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: rgba(0,0,0,0.6);
+        }
+        .form-group i {
+            position: absolute;
+            right: 0;
+            top: 15px;
+            color: rgba(0,0,0,0.5);
+        }
+        .captcha-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .captcha-box img {
+            height: 40px;
+            background: white;
+            padding: 5px;
+        }
+        .btn-submit {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        /* ==========================================================================
+           MAP & FOOTER
+           ========================================================================== */
+        .map-section iframe {
+            width: 100%;
+            height: 400px;
+            display: block;
+            border: none;
+        }
+        footer {
+            background-color: #1a1a1a;
+            color: #ccc;
+            text-align: center;
+            padding: 25px 0;
+            font-size: 13px;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+        }
+        .footer-social a:hover { color: var(--accent-color); }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN (Media Queries)
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .about-grid, .contact-grid, .testi-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h2 { font-size: 40px; }
+            .scroll-indicator { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--secondary-color);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            .nav-links.active { left: 0; }
+            .topbar { display: none; }
+            .features-grid { grid-template-columns: 1fr; }
+            .info-blocks { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+        .logo-img {
+    max-height: 50px; /* Anda bisa ubah angka ini untuk membesarkan/mengecilkan logo */
+    width: auto;
+    display: block;
+}
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Scroll Indicator -->
+    <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="line"></div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/6281324339650" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="topbar-left">
+                <span><i class="fas fa-phone-alt"></i> Phone: +62 813 2433 9650</span>
+                <span><i class="fas fa-envelope"></i> dwitamacipta.internusa@gmail.com</span>
+            </div>
+            <div class="topbar-right">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header id="header">
+        <div class="container navbar">
+            <div class="logo">
+                <a href="#home">
+                    <img src="Logo DCI (No Background).png" alt="Logo PT Dwitama Cipta Internusa" class="logo-img">
+                </a>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About us</a></li>
+                <li><a href="#services">Our Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#clients">Our Clients</a></li>
+                <li><a href="#testimony">Testimony</a></li>
+                <li><a href="#contact">Contact us</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="slider-controls">
+            <div class="slider-arrow"><i class="fas fa-arrow-left"></i></div>
+            <div class="slider-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h2>Digital and very trusted transport logistic agency</h2>
+                <p>Providing flexible improved service levels, and delivery</p>
+                <a href="#about" class="btn btn-white">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section section-padding">
+        <div class="container about-grid">
+            <div class="about-text">
+                <h2>Solusi terpercaya untuk pengadaan umum yang profesional</h2>
+                <p>PT Dwitama Cipta Internusa adalah perusahaan pengadaan umum terkemuka yang berdedikasi untuk menyediakan barang dan layanan berkualitas tinggi bagi lembaga pemerintah maupun sektor swasta. Didukung oleh sumber daya yang kompeten dan komitmen ketat terhadap kualitas layanan, kami memastikan setiap proyek dilaksanakan secara profesional, dikirimkan tepat waktu, dan disesuaikan secara tepat dengan spesifikasi yang Anda minta. Dalam setiap operasional, kami menjunjung tinggi standar transparansi, akuntabilitas, dan kepatuhan terhadap regulasi yang tertinggi.</p>
+                <a href="#services" class="btn btn-black">Read More About Us &rarr;</a>
+            </div>
+            <div class="about-image">
+                <!-- Using Unsplash Placeholder representing logistics/transport -->
+                <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Logistics and Procurement">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section section-padding">
+        <div class="container">
+            <div class="services-wrapper">
+                <div class="services-text">
+                    <h4>Professional services</h4>
+                    <h2>Layanan Kami</h2>
+                    <p>Kami berfokus pada penyediaan solusi pengadaan barang dan jasa umum yang terintegrasi untuk memenuhi kebutuhan operasional instansi pemerintah maupun korporasi swasta. Mulai dari kebutuhan kantor, teknologi, hingga logistik, kami berkomitmen pada standar kualitas, ketepatan waktu, dan kepatuhan regulasi.</p>
+                    <div class="service-controls">
+                        <div class="slider-arrow" id="btn-serv-prev"><i class="fas fa-arrow-left"></i></div>
+                        <div class="slider-arrow" id="btn-serv-next"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </div>
+                
+                <div class="services-carousel" id="services-carousel">
+                    <!-- Card 1 (Active/Yellow) -->
+                    <div class="service-card active">
+                        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Peralatan Domestik">
+                        <h3>Peralatan Domestik</h3>
+                        <p>Pengadaan perlengkapan domestik untuk fasilitas asrama atau mess karyawan. Setiap barang dipastikan melewati quality control ketat demi menjaga ketahanan, fungsionalitas, serta kenyamanan pemakaian optimal dalam jangka panjang secara berkala.</p>
+                        <a href="#"><i class="fas fa-arrow-circle-right"></i> Know more</a>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1473654729523-203e25dfda10?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Pengadaan Pakaian Kerja">
+                        <h3>Pengadaan Pakaian Kerja</h3>
+                        <p>Penyediaan kebutuhan Pakaian untuk korporasi dan instansi. Kami melayani pembuatan seragam dinas custom sesuai desain Anda, penjahitan pakaian kerja, hingga pengadaan grosir berbagai jenis pakaian olahraga dan pakaian umum dengan bahan berkualitas tinggi.</p>
+                        <a href="#"><i class="fas fa-arrow-circle-right"></i> Know more</a>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Pengadaan Perangkat Teknologi">
+                        <h3>Pengadaan Perangkat</h3>
+                        <p>Solusi pengadaan teknologi & kantor penunjang operasional. Kami menyediakan perangkat komputer (laptop, PC, server), alat tulis kantor (ATK), hingga mesin fotokopi dan jasa percetakan berkualitas untuk memenuhi kebutuhan korporasi Anda.</p>
+                        <a href="#"><i class="fas fa-arrow-circle-right"></i> Know more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-section section-padding">
+        <div class="container">
+            <h2>Why Choose Us</h2>
+            <p>Kami berkomitmen menjadi mitra pengadaan yang terpercaya dengan menjunjung tinggi profesionalisme, kepatuhan regulasi, serta kualitas layanan terbaik di setiap proses pengerjaan</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Legalitas Terjamin</h3>
+                        <p>Terdaftar resmi dengan NIB dan patuh regulasi</p>
+                    </div>
+                    <div class="feature-icon"><i class="fas fa-search"></i></div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Kontrol Kualitas Ketat</h3>
+                        <p>Memastikan setiap barang sesuai spesifikasi dan layak</p>
+                    </div>
+                    <div class="feature-icon"><i class="fas fa-truck-medical"></i></div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Distribusi Tepat Waktu</h3>
+                        <p>Pengiriman logistik cepat sesuai jadwal kontrak</p>
+                    </div>
+                    <div class="feature-icon"><i class="fas fa-eye"></i></div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Transparan & Akuntabel</h3>
+                        <p>Pelaporan biaya dan pekerjaan yang jujur serta terbuka</p>
+                    </div>
+                    <div class="feature-icon"><i class="fas fa-file-invoice"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section section-padding">
+        <div class="container">
+            <h2>Our Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 1"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 2"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 3"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 4"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504221507732-5246c045949b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 5"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504221507732-5246c045949b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gallery 6"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section id="clients" class="clients-section section-padding">
+        <div class="container">
+            <h2>Our Client</h2>
+            <p>Each of these renewable energy sources has its advantages and challenges, and their adoption is dependent on factors like geographical location, available resources technological advancements, and economic feasibility.</p>
+            <div class="client-logos">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/InVision_logo.png/640px-InVision_logo.png" alt="InVision">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Pingdom_Logo.png/640px-Pingdom_Logo.png" alt="Pingdom">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Realtor.com_logo.svg/1024px-Realtor.com_logo.svg.png" alt="Realtor.com">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Walmart_logo.svg/1024px-Walmart_logo.svg.png" alt="Walmart">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Zillow_logo.svg/1024px-Zillow_logo.svg.png" alt="Zillow">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section id="testimony" class="testi-section section-padding">
+        <div class="container testi-grid">
+            <div class="testi-left">
+                <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                <h2>Here is what our<br>clients have to<br>say.</h2>
+                <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                <div class="testi-stat">
+                    <h3>99%</h3>
+                    <p>Customer complete<br>successfully.</p>
+                </div>
+            </div>
+            
+            <div class="testi-right testi-card-wrapper">
+                <div class="testi-arrow left"><i class="fas fa-chevron-left"></i></div>
+                <div class="testi-card">
+                    <p>"The theme is very valid and offers many possibilities of customization to adapt it to your needs, but the thing I got the most out of it was the relationship with the support team. 22"</p>
+                    <div class="author-info">
+                        <h4>Leonel mooney 21</h4>
+                        <span>Customer</span>
+                    </div>
+                </div>
+                <div class="testi-arrow right"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section section-padding">
+        <div class="container contact-grid">
+            <div class="contact-info">
+                <h2>Contact<br>Informations</h2>
+                
+                <div class="info-blocks">
+                    <div class="info-item">
+                        <h4>Visit Company</h4>
+                        <p>JL. Giri Asih, Desa/Kelurahan Cinanjung, Kec. Tanjungsari, Kab. Sumedang, Provinsi Jawa Barat, Kode Pos: 45362</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Email Address</h4>
+                        <p>dwitamacipta.internusa@gmail.com</p>
+                        <p>fauzanseptiana@dwitamaciptainternusa.com</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Let's talk with us</h4>
+                        <p>Phone: +62 813 2433 9650</p>
+                        <p>Fax: -</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Opening hours</h4>
+                        <p>Mon - Fri: 09:00 am to 08:00 pm</p>
+                        <p>Sat - Sun: 09:00 am to 06:00 pm</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form-box">
+                <h3>Send Message</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Enter your name*" required>
+                        <i class="far fa-user"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" placeholder="Enter your Phone Number*" required>
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Enter your email address*" required>
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder="Enter Subject*" required>
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" rows="3" placeholder="Enter your message" required></textarea>
+                        <i class="far fa-comment-dots"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="captcha" placeholder="Enter Security Code*" required>
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="captcha-box">
+                        <!-- Simulated Captcha Image -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Captcha.jpg" alt="Captcha" style="width:120px; height:auto; mix-blend-mode: multiply;">
+                        <button type="button" style="background: white; border: none; padding: 5px; cursor: pointer;"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <button type="submit" class="btn-submit">Send message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map & Footer -->
+    <section class="map-section">
+        <!-- Google Maps iframe embedded based on location format provided -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1m3!1d3960.9161247072483!2d107.81057427499622!3d-6.900599093098522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68d7ab8720ab3d%3A0x673989c79f3238a2!2sCinanjung%2C%20Kec.%20Tanjungsari%2C%20Kabupaten%20Sumedang%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+    
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2026 . Allrights reserved by Faberhost Indonesia</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logika JavaScript (Vanilla) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Mobile Menu Toggle
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Tutup menu jika link diklik (mobile)
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // 2. Sticky Header Shadow on Scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+                } else {
+                    header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+                }
+            });
+
+            // 3. Simple Services Carousel Logic
+            const servicesCarousel = document.getElementById('services-carousel');
+            const btnServPrev = document.getElementById('btn-serv-prev');
+            const btnServNext = document.getElementById('btn-serv-next');
+            const scrollAmount = 380; // card width + gap
+
+            btnServNext.addEventListener('click', () => {
+                servicesCarousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            btnServPrev.addEventListener('click', () => {
+                servicesCarousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            // Optional: Toggle active class on cards for visual effect
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    serviceCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+
+            // 4. Form Submission Handling (Basic Validation UI)
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent page reload
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const captcha = document.getElementById('captcha').value;
+                
+                // Simple basic logic for demonstration
+                if(name && captcha) {
+                    // Tampilkan response UI ke pengguna
+                    const btnSubmit = document.querySelector('.btn-submit');
+                    const originalText = btnSubmit.innerText;
+                    
+                    btnSubmit.innerText = 'Sending...';
+                    btnSubmit.style.backgroundColor = '#1a1a1a';
+                    btnSubmit.style.color = '#fff';
+                    
+                    // Simulate network request
+                    setTimeout(() => {
+                        alert('Terima kasih, ' + name + '! Pesan Anda telah terkirim.');
+                        contactForm.reset();
+                        btnSubmit.innerText = originalText;
+                        btnSubmit.style.backgroundColor = ''; 
+                        btnSubmit.style.color = '';
+                    }, 1500);
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

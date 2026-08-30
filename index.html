@@ -14,6 +14,11 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://rossnoar.com/" />
 
+  <!-- Security & Privacy Meta Tags -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+
   <!-- Open Graph / Facebook & WhatsApp -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://rossnoar.com/" />
@@ -241,7 +246,7 @@
         <!-- Right: Actions (Search, Wishlist, Order Chat CTA) -->
         <div class="flex items-center space-x-2 sm:space-x-4">
           <!-- Search Button -->
-          <button @click="searchModalOpen = true; $nextTick(() => $refs.searchInput.focus())"
+          <button @click="searchModalOpen = true; $nextTick(() => { if ($refs.searchInput) $refs.searchInput.focus(); if (window.lucide) window.lucide.createIcons(); })"
             class="p-2 text-neutral-700 hover:text-black hover:bg-neutral-100 rounded-full transition-colors relative"
             title="Cari Produk" aria-label="Search">
             <i data-lucide="search" class="w-5 h-5"></i>
@@ -298,8 +303,18 @@
           </button>
         </div>
 
+        <!-- Search Quick Trigger in Mobile Menu -->
+        <button @click="mobileMenuOpen = false; searchModalOpen = true; $nextTick(() => { if ($refs.searchInput) $refs.searchInput.focus(); if (window.lucide) window.lucide.createIcons(); })"
+          class="mt-4 w-full flex items-center justify-between px-3.5 py-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors">
+          <span class="flex items-center gap-2">
+            <i data-lucide="search" class="w-4 h-4 text-neutral-500"></i>
+            <span>Cari Artikel Produk...</span>
+          </span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutral-400"></i>
+        </button>
+
         <!-- Navigation Links -->
-        <nav class="mt-8 space-y-4">
+        <nav class="mt-6 space-y-4">
           <a href="#catalog" @click="activeCategory = 'all'; mobileMenuOpen = false"
             class="flex items-center justify-between text-base font-bold uppercase tracking-wider py-2 border-b border-neutral-100 hover:pl-2 transition-all">
             <span>New Arrivals</span>
@@ -334,17 +349,17 @@
       </div>
 
       <div class="pt-6 border-t border-neutral-200 space-y-3">
-        <a :href="getGeneralWhatsAppLink()" target="_blank"
+        <a :href="getGeneralWhatsAppLink()" target="_blank" rel="noopener noreferrer"
           class="w-full flex items-center justify-center gap-2 bg-black text-white py-3 font-bold text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors">
           <i data-lucide="message-circle" class="w-4 h-4"></i>
           <span>Order Direct via WA</span>
         </a>
         <div class="flex items-center justify-center space-x-4 pt-2 text-neutral-500">
-          <a href="https://instagram.com" target="_blank" class="hover:text-black"><i data-lucide="instagram"
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-black"><i data-lucide="instagram"
               class="w-5 h-5"></i></a>
-          <a href="https://twitter.com" target="_blank" class="hover:text-black"><i data-lucide="twitter"
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="hover:text-black"><i data-lucide="twitter"
               class="w-5 h-5"></i></a>
-          <a href="https://wa.me/6281324339650" target="_blank" class="hover:text-black"><i data-lucide="phone"
+          <a href="https://wa.me/6281324339650" target="_blank" rel="noopener noreferrer" class="hover:text-black"><i data-lucide="phone"
               class="w-5 h-5"></i></a>
         </div>
       </div>
@@ -580,7 +595,7 @@
           <p class="text-xs sm:text-sm text-neutral-300 mt-1 max-w-xl">Konsultasikan kebutuhan apparel custom
             sablon/bordir dan pemesanan batch bersama tim Rossnoar Studio.</p>
         </div>
-        <a :href="getCustomInquiryLink()" target="_blank"
+        <a :href="getCustomInquiryLink()" target="_blank" rel="noopener noreferrer"
           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-black hover:bg-neutral-100 font-bold text-xs uppercase tracking-widest px-6 py-3.5 whitespace-nowrap transition-colors">
           <i data-lucide="phone-call" class="w-4 h-4"></i>
           <span>Konsultasi Admin</span>
@@ -897,7 +912,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
 
           <!-- Social Icons -->
           <div class="flex items-center space-x-3 pt-2">
-            <a href="https://www.instagram.com/rossnoar.id/" target="_blank"
+            <a href="https://www.instagram.com/rossnoar.id/" target="_blank" rel="noopener noreferrer"
               class="w-9 h-9 rounded-none border border-neutral-700 flex items-center justify-center hover:bg-white hover:text-black hover:border-white transition-colors"
               title="Instagram">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
@@ -907,7 +922,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
               </svg>
             </a>
-            <a :href="getGeneralWhatsAppLink()" target="_blank"
+            <a :href="getGeneralWhatsAppLink()" target="_blank" rel="noopener noreferrer"
               class="w-9 h-9 rounded-none border border-neutral-700 flex items-center justify-center hover:bg-white hover:text-black hover:border-white transition-colors"
               title="WhatsApp">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -1097,42 +1112,96 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
   <!-- ========================================================================= -->
   <!-- 10. SEARCH MODAL (Alpine.js) -->
   <!-- ========================================================================= -->
-  <div x-show="searchModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-start justify-center min-h-screen px-4 pt-20 pb-4 text-center">
+  <div x-show="searchModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto"
+    @keydown.escape.window="searchModalOpen = false">
+    <div class="flex items-start justify-center min-h-screen px-4 pt-16 sm:pt-20 pb-4 text-center">
 
       <!-- Backdrop -->
       <div x-show="searchModalOpen" @click="searchModalOpen = false"
+        x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-150"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"></div>
 
-      <!-- Search Input Container -->
+      <!-- Search Input & Results Container -->
       <div x-show="searchModalOpen"
-        class="inline-block align-top bg-white text-left overflow-hidden shadow-2xl transform transition-all w-full max-w-xl border border-black relative p-6 z-10">
+        x-transition:enter="ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-4 scale-95"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+        x-transition:leave-end="opacity-0 -translate-y-4 scale-95"
+        class="inline-block align-top bg-white text-left overflow-hidden shadow-2xl transform transition-all w-full max-w-xl border border-black relative p-5 sm:p-6 z-10">
+        
+        <!-- Search Input Bar -->
         <div class="flex items-center justify-between pb-4 border-b border-neutral-200">
-          <div class="flex items-center gap-3 flex-1">
-            <i data-lucide="search" class="w-5 h-5 text-neutral-400"></i>
-            <input x-ref="searchInput" type="text" x-model="searchQuery" @keyup.enter="searchModalOpen = false"
-              placeholder="Cari nama artikel, material, atau kategori..."
-              class="w-full text-base font-medium text-black focus:outline-none placeholder:text-neutral-400" />
-          </div>
-          <button @click="searchModalOpen = false" class="p-1 text-neutral-400 hover:text-black">
+          <form @submit.prevent="executeSearch(searchQuery)" class="flex items-center gap-3 flex-1 mr-2">
+            <i data-lucide="search" class="w-5 h-5 text-neutral-400 flex-shrink-0"></i>
+            <input x-ref="searchInput" type="text" x-model="searchQuery"
+              placeholder="Cari artikel, material, atau kategori..."
+              class="w-full text-sm sm:text-base font-medium text-black focus:outline-none placeholder:text-neutral-400" />
+            <button type="button" x-show="searchQuery.trim().length > 0" @click="searchQuery = ''; $refs.searchInput.focus()"
+              class="p-1 text-neutral-400 hover:text-black" title="Hapus teks">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </form>
+          <button @click="searchModalOpen = false" class="p-1.5 text-neutral-400 hover:text-black rounded hover:bg-neutral-100">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
+        <!-- Live Search Results (Muncul saat user mengetik) -->
+        <div x-show="searchQuery.trim().length > 0" class="mt-4">
+          <div class="flex items-center justify-between mb-3 text-xs">
+            <span class="font-bold uppercase tracking-wider text-neutral-500">
+              Hasil Pencarian (<span x-text="searchResults.length"></span>)
+            </span>
+            <button x-show="searchResults.length > 0" @click="executeSearch(searchQuery)"
+              class="text-black font-bold hover:underline flex items-center gap-1">
+              <span>Lihat di Katalog</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <div class="space-y-2 max-h-[260px] overflow-y-auto pr-1">
+            <template x-for="item in searchResults" :key="item.id">
+              <div @click="openProductFromSearch(item)"
+                class="flex items-center justify-between p-2.5 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 cursor-pointer transition-colors group">
+                <div class="flex items-center gap-3">
+                  <img :src="item.image" :alt="item.name" class="w-12 h-12 object-cover bg-neutral-200 flex-shrink-0" />
+                  <div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase" x-text="item.code"></span>
+                    <h4 class="font-bold text-xs uppercase text-black group-hover:underline line-clamp-1" x-text="item.name"></h4>
+                    <span class="text-[11px] text-neutral-500 line-clamp-1" x-text="item.material"></span>
+                  </div>
+                </div>
+                <div class="text-right flex-shrink-0 pl-2">
+                  <span class="font-black text-xs text-black block" x-text="formatRupiah(item.price)"></span>
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 group-hover:text-black">Detail &rarr;</span>
+                </div>
+              </div>
+            </template>
+
+            <!-- Empty Search State -->
+            <div x-show="searchResults.length === 0" class="py-8 text-center text-neutral-400">
+              <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+              <p class="text-xs">Tidak ditemukan artikel dengan kata kunci "<span class="font-semibold text-black" x-text="searchQuery"></span>"</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Quick Suggestions -->
-        <div class="mt-4">
-          <span class="text-[11px] uppercase font-bold text-neutral-400 tracking-wider block mb-2">Pencarian
-            Populer:</span>
+        <div class="mt-4 pt-3" :class="searchQuery.trim().length > 0 ? 'border-t border-neutral-100' : ''">
+          <span class="text-[11px] uppercase font-bold text-neutral-400 tracking-wider block mb-2">Pencarian Populer:</span>
           <div class="flex flex-wrap gap-2">
-            <button @click="searchQuery = 'IN THE WILD'; searchModalOpen = false"
-              class="text-xs bg-neutral-100 hover:bg-neutral-200 px-2.5 py-1 text-neutral-700">IN THE WILD</button>
-            <button @click="searchQuery = 'APEX'; searchModalOpen = false"
-              class="text-xs bg-neutral-100 hover:bg-neutral-200 px-2.5 py-1 text-neutral-700">APEX</button>
-            <button @click="searchQuery = 'Heavyweight'; searchModalOpen = false"
-              class="text-xs bg-neutral-100 hover:bg-neutral-200 px-2.5 py-1 text-neutral-700">Heavyweight
-              20s/16s</button>
-            <button @click="searchQuery = 'T-Shirts'; searchModalOpen = false"
-              class="text-xs bg-neutral-100 hover:bg-neutral-200 px-2.5 py-1 text-neutral-700">T-Shirts</button>
+            <button @click="executeSearch('IN THE WILD')"
+              class="text-xs bg-neutral-100 hover:bg-black hover:text-white px-2.5 py-1 text-neutral-700 transition-colors">IN THE WILD</button>
+            <button @click="executeSearch('APEX')"
+              class="text-xs bg-neutral-100 hover:bg-black hover:text-white px-2.5 py-1 text-neutral-700 transition-colors">APEX</button>
+            <button @click="executeSearch('Heavyweight')"
+              class="text-xs bg-neutral-100 hover:bg-black hover:text-white px-2.5 py-1 text-neutral-700 transition-colors">Heavyweight 20s/16s</button>
+            <button @click="executeSearch('T-Shirts')"
+              class="text-xs bg-neutral-100 hover:bg-black hover:text-white px-2.5 py-1 text-neutral-700 transition-colors">T-Shirts</button>
           </div>
         </div>
 
@@ -1176,7 +1245,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
                     <span class="text-xs font-black text-neutral-800" x-text="formatRupiah(item.price)"></span>
                   </div>
                   <div class="flex items-center justify-between pt-2">
-                    <a :href="getWhatsAppProductLink(item)" target="_blank"
+                    <a :href="getWhatsAppProductLink(item)" target="_blank" rel="noopener noreferrer"
                       class="text-[11px] font-bold uppercase underline tracking-wider text-black hover:text-neutral-600">
                       Order WA
                     </a>
@@ -1328,6 +1397,38 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
               item.category.toLowerCase().includes(this.searchQuery.toLowerCase());
             return matchCategory && matchQuery;
           });
+        },
+
+        // Live search results specifically computed for search modal (matches across all products)
+        get searchResults() {
+          if (!this.searchQuery.trim()) return [];
+          const query = this.searchQuery.toLowerCase().trim();
+          return this.products.filter(item => {
+            return item.name.toLowerCase().includes(query) ||
+              item.code.toLowerCase().includes(query) ||
+              item.material.toLowerCase().includes(query) ||
+              item.category.toLowerCase().includes(query);
+          });
+        },
+
+        // Execute search: reset category to 'all', close modal, and smoothly scroll to catalog
+        executeSearch(query) {
+          this.searchQuery = query;
+          this.activeCategory = 'all';
+          this.searchModalOpen = false;
+          this.$nextTick(() => {
+            if (window.lucide) window.lucide.createIcons();
+            const catalogEl = document.getElementById('catalog');
+            if (catalogEl) {
+              catalogEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        },
+
+        // Directly open product details from search results
+        openProductFromSearch(product) {
+          this.searchModalOpen = false;
+          this.openQuickView(product);
         },
 
         // Category Product Counter

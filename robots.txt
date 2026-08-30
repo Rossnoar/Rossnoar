@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block sensitive directories / configs if any
+Disallow: /.git/
+Disallow: /Asset/private/
+
+# Sitemap
+Sitemap: https://rossnoar.com/sitemap.xml

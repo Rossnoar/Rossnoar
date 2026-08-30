@@ -1,0 +1,58 @@
+# =========================================================================
+# ROSSNOAR.COM — Production Apache / LiteSpeed Security Configuration
+# =========================================================================
+
+# 1. PREVENT DIRECTORY BROWSING (Hacker cannot inspect folder contents)
+Options -Indexes
+
+# 2. FORCE HTTPS (Encrypt all user traffic)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# 3. BLOCK ACCESS TO SENSITIVE FILES & FOLDERS (.git, .env, backups, config)
+<FilesMatch "(^\.|\.env|\.git|\.yml|\.yaml|\.json|\.lock|\.bak|\.config|\.sh|\.sql)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# 4. HTTP SECURITY HEADERS (Mitigate XSS, Clickjacking, MIME-sniffing)
+<IfModule mod_headers.c>
+  # Protect against Clickjacking / UI Redressing
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Protect against MIME-type confusion attacks
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Enable Browser XSS filter
+  Header always set X-XSS-Protection "1; mode=block"
+
+  # Control Referrer Information
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Restrict Unneeded Hardware APIs
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # HTTP Strict Transport Security (HSTS - 1 Year)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
+
+# 5. ASSET CACHING & PERFORMANCE
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/gif "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
