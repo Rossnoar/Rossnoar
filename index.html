@@ -143,7 +143,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 
@@ -472,7 +472,7 @@
           </span>
         </div>
         <div class="hidden sm:block text-neutral-400">
-          Klik card untuk detail size & spesifikasi bahan
+          Arahkan kursor ke gambar untuk melihat tampak belakang • Klik card untuk detail
         </div>
       </div>
 
@@ -482,7 +482,7 @@
           <article
             class="group bg-white border border-neutral-200 flex flex-col justify-between hover:border-black hover:shadow-xl transition-all duration-300 relative">
             <!-- Badge / Status Tag -->
-            <div class="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
+            <div class="absolute top-2.5 left-2.5 z-20 flex flex-col gap-1 pointer-events-none">
               <span x-text="product.status" :class="{
                   'bg-black text-white': product.status === 'NEW' || product.status === 'FIRST DROP',
                   'bg-amber-500 text-white': product.status === 'LIMITED',
@@ -494,22 +494,37 @@
 
             <!-- Wishlist Button -->
             <button @click.stop="toggleWishlist(product)"
-              class="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 flex items-center justify-center text-neutral-600 hover:text-black hover:scale-110 transition-transform shadow-sm"
+              class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 flex items-center justify-center text-neutral-600 hover:text-black hover:scale-110 transition-transform shadow-sm"
               :title="isInWishlist(product.id) ? 'Hapus dari Wishlist' : 'Simpan ke Wishlist'">
               <i data-lucide="bookmark" class="w-4 h-4"
                 :class="isInWishlist(product.id) ? 'fill-black text-black' : ''"></i>
             </button>
 
-            <!-- Product Image Container (1:1 Ratio) -->
+            <!-- Product Image Container (Hover Image Swap 2 View: Front & Back) -->
             <div @click="openQuickView(product)"
-              class="aspect-square-container bg-neutral-100 cursor-pointer overflow-hidden relative">
-              <img :src="product.image" :alt="product.name" loading="lazy"
-                class="group-hover:scale-105 transition-transform duration-500"
+              class="aspect-square-container bg-neutral-100 cursor-pointer overflow-hidden relative group/img">
+              
+              <!-- Gambar Front (Default) -->
+              <img :src="product.imageFront || product.image" :alt="`${product.name} Front`" loading="lazy"
+                class="w-full h-full object-cover transition-opacity duration-300 group-hover/img:opacity-0"
                 onerror="this.src='https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop'" />
+
+              <!-- Gambar Back (Tampil saat Hover) -->
+              <img :src="product.imageBack || product.image" :alt="`${product.name} Back`" loading="lazy"
+                class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover/img:opacity-100"
+                onerror="this.src='https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop'" />
+
+              <!-- Indicator Badge Front / Back -->
+              <div class="absolute bottom-2 left-2 z-10 hidden sm:flex items-center gap-1 bg-black/60 text-white text-[9px] font-mono px-1.5 py-0.5 rounded backdrop-blur-xs opacity-80 group-hover/img:opacity-0 transition-opacity">
+                <span>FRONT</span>
+              </div>
+              <div class="absolute bottom-2 left-2 z-10 hidden sm:flex items-center gap-1 bg-black/60 text-white text-[9px] font-mono px-1.5 py-0.5 rounded backdrop-blur-xs opacity-0 group-hover/img:opacity-100 transition-opacity">
+                <span>BACK</span>
+              </div>
 
               <!-- Hover Overlay with Quick View Hint (Desktop) -->
               <div
-                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center">
+                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center z-10">
                 <span
                   class="bg-white text-black text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
                   Quick View
@@ -1019,12 +1034,28 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
         <template x-if="selectedProduct">
           <div class="grid grid-cols-1 sm:grid-cols-2">
 
-            <!-- Left: Product Image -->
-            <div class="bg-neutral-100 aspect-square sm:aspect-auto relative">
-              <img :src="selectedProduct.image" :alt="selectedProduct.name" class="w-full h-full object-cover" />
-              <div class="absolute top-3 left-3">
-                <span x-text="selectedProduct.status"
-                  class="bg-black text-white text-[10px] font-black uppercase px-2.5 py-1 tracking-widest"></span>
+            <!-- Left: Product Image & View Switcher -->
+            <div class="bg-neutral-100 flex flex-col justify-between relative">
+              <div class="aspect-square relative overflow-hidden">
+                <img :src="selectedImage || selectedProduct.imageFront || selectedProduct.image" :alt="selectedProduct.name" class="w-full h-full object-cover" />
+                <div class="absolute top-3 left-3">
+                  <span x-text="selectedProduct.status"
+                    class="bg-black text-white text-[10px] font-black uppercase px-2.5 py-1 tracking-widest"></span>
+                </div>
+              </div>
+
+              <!-- View Switcher Thumbnails (Depan / Belakang) -->
+              <div class="p-3 bg-neutral-200/60 border-t border-neutral-300 flex items-center gap-2 justify-center">
+                <button @click="selectedImage = selectedProduct.imageFront || selectedProduct.image"
+                  :class="(selectedImage === (selectedProduct.imageFront || selectedProduct.image)) ? 'border-black font-bold' : 'border-neutral-300 text-neutral-500'"
+                  class="flex-1 py-1.5 px-2 bg-white border text-[11px] uppercase tracking-wider transition-all text-center">
+                  Depan (Front)
+                </button>
+                <button @click="selectedImage = selectedProduct.imageBack || selectedProduct.image"
+                  :class="(selectedImage === (selectedProduct.imageBack || selectedProduct.image)) ? 'border-black font-bold' : 'border-neutral-300 text-neutral-500'"
+                  class="flex-1 py-1.5 px-2 bg-white border text-[11px] uppercase tracking-wider transition-all text-center">
+                  Belakang (Back)
+                </button>
               </div>
             </div>
 
@@ -1168,7 +1199,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
               <div @click="openProductFromSearch(item)"
                 class="flex items-center justify-between p-2.5 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 cursor-pointer transition-colors group">
                 <div class="flex items-center gap-3">
-                  <img :src="item.image" :alt="item.name" class="w-12 h-12 object-cover bg-neutral-200 flex-shrink-0" />
+                  <img :src="item.imageFront || item.image" :alt="item.name" class="w-12 h-12 object-cover bg-neutral-200 flex-shrink-0" />
                   <div>
                     <span class="text-[10px] font-mono text-neutral-400 uppercase" x-text="item.code"></span>
                     <h4 class="font-bold text-xs uppercase text-black group-hover:underline line-clamp-1" x-text="item.name"></h4>
@@ -1238,7 +1269,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
           <div class="mt-6 space-y-4 overflow-y-auto max-h-[60vh] pr-1">
             <template x-for="item in wishlist" :key="item.id">
               <div class="flex gap-4 p-3 bg-neutral-50 border border-neutral-200">
-                <img :src="item.image" :alt="item.name" class="w-16 h-16 object-cover bg-neutral-200 flex-shrink-0" />
+                <img :src="item.imageFront || item.image" :alt="item.name" class="w-16 h-16 object-cover bg-neutral-200 flex-shrink-0" />
                 <div class="flex-1 flex flex-col justify-between">
                   <div>
                     <h4 class="font-bold text-xs uppercase text-black line-clamp-1" x-text="item.name"></h4>
@@ -1318,6 +1349,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
         wishlistModalOpen: false,
         quickViewModalOpen: false,
         selectedProduct: null,
+        selectedImage: '',
         selectedSize: '',
         searchQuery: '',
         activeCategory: 'all',
@@ -1335,7 +1367,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
           { id: 'accessories', label: 'Accessories' }
         ],
 
-        // Product Catalog Archive (First Drop - 2 Articles)
+        // Product Catalog Archive (Mendukung 2 view: imageFront & imageBack)
         products: [
           {
             id: 1,
@@ -1347,7 +1379,8 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
             fit: 'Boxy Oversized Fit',
             status: 'FIRST DROP',
             sizes: ['M', 'L', 'XL', 'XXL'],
-            image: 'Asset/Artikel/IN THE WILD.png'
+            imageFront: 'Asset/Artikel/IN THE WILD/FRONT.png', // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/IN THE WILD/BACK.png'         // Gambar tampak belakang
           },
           {
             id: 2,
@@ -1359,7 +1392,73 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
             fit: 'Boxy Oversized Fit',
             status: 'NEW',
             sizes: ['M', 'L', 'XL', 'XXL'],
-            image: 'Asset/Artikel/APEX.png'
+            imageFront: 'Asset/Artikel/APEX/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/APEX/BACK.png'               // Gambar tampak belakang
+          },
+          {
+            id: 3,
+            code: 'RSNR-003',
+            name: 'EMPEROR',
+            category: 't-shirts',
+            price: 249000,
+            material: '20s/16s Heavyweight Combed Cotton (230 GSM)',
+            fit: 'Boxy Oversized Fit',
+            status: 'NEW',
+            sizes: ['M', 'L', 'XL', 'XXL'],
+            imageFront: 'Asset/Artikel/EMPEROR/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/EMPEROR/BACK.png'               // Gambar tampak belakang
+          },
+          {
+            id: 4,
+            code: 'RSNR-004',
+            name: 'Company',
+            category: 't-shirts',
+            price: 249000,
+            material: '20s/16s Heavyweight Combed Cotton (230 GSM)',
+            fit: 'Boxy Oversized Fit',
+            status: 'NEW',
+            sizes: ['M', 'L', 'XL', 'XXL'],
+            imageFront: 'Asset/Artikel/COMPANY/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/COMPANY/BACK.png'               // Gambar tampak belakang
+          },
+          {
+            id: 5,
+            code: 'RSNR-005',
+            name: 'HAND',
+            category: 't-shirts',
+            price: 249000,
+            material: '20s/16s Heavyweight Combed Cotton (230 GSM)',
+            fit: 'Boxy Oversized Fit',
+            status: 'NEW',
+            sizes: ['M', 'L', 'XL', 'XXL'],
+            imageFront: 'Asset/Artikel/HAND/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/HAND/BACK.png'               // Gambar tampak belakang
+          },
+          {
+            id: 6,
+            code: 'RSNR-006',
+            name: 'MAGMA',
+            category: 't-shirts',
+            price: 249000,
+            material: '20s/16s Heavyweight Combed Cotton (230 GSM)',
+            fit: 'Boxy Oversized Fit',
+            status: 'NEW',
+            sizes: ['M', 'L', 'XL', 'XXL'],
+            imageFront: 'Asset/Artikel/ORANGE/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/ORANGE/BACK.png'               // Gambar tampak belakang
+          },
+          {
+            id: 7,
+            code: 'RSNR-007',
+            name: 'KINGS',
+            category: 't-shirts',
+            price: 249000,
+            material: '20s/16s Heavyweight Combed Cotton (230 GSM)',
+            fit: 'Boxy Oversized Fit',
+            status: 'NEW',
+            sizes: ['M', 'L', 'XL', 'XXL'],
+            imageFront: 'Asset/Artikel/KINGS/FRONT.png',       // Sesuaikan dengan nama file gambar depanmu
+            imageBack: 'Asset/Artikel/KINGS/BACK.png'               // Gambar tampak belakang
           }
         ],
 
@@ -1464,6 +1563,7 @@ Rossnoar lahir dari ambisi, proses, dan keyakinan untuk terus melangkah maju. Ka
         // Quick View Modal Opener
         openQuickView(product) {
           this.selectedProduct = product;
+          this.selectedImage = product.imageFront || product.image;
           this.selectedSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : '';
           this.quickViewModalOpen = true;
           this.$nextTick(() => {
